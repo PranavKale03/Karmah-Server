@@ -49,3 +49,14 @@ export const authorize = (...roles) => {
     next();
   };
 };
+// Protect demo route with API key
+export const demoProtect = (req, res, next) => {
+  const apiKey = req.headers["x-api-key"];
+
+  if (apiKey && apiKey === process.env.DEMO_API_KEY) {
+    next();
+  } else {
+    res.status(401);
+    throw new Error("Not authorized, invalid demo API key");
+  }
+};

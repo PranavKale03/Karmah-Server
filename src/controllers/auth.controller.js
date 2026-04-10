@@ -41,7 +41,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     res.status(201).json({
       success: true,
       data: {
-        _id: user.id,
+        _id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
@@ -67,7 +67,7 @@ export const loginUser = asyncHandler(async (req, res) => {
     res.json({
       success: true,
       data: {
-        _id: user.id,
+        _id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
@@ -78,4 +78,62 @@ export const loginUser = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error("Invalid credentials");
   }
+});
+// @desc    Demo Login (Auto-create or login demo user)
+// @route   POST /api/v1/auth/demo
+// @access  Protected by API Key
+export const demoLogin = asyncHandler(async (req, res) => {
+  const email = process.env.DEMO_USER_EMAIL;
+  const name = process.env.DEMO_USER_NAME;
+  const password = process.env.DEMO_USER_PASSWORD;
+
+  if (!email || !name || !password) {
+    console.error("Demo login configuration error: missing environment variables", { email, name, password: !!password });
+    res.status(500);
+    throw new Error("Demo login is not configured on the server.");
+  }
+
+  let user = await User.findOne({ email });
+
+  if (!user) {
+    console.log(`Creating new demo user: ${email}`);
+    try {
+      user = await User.create({
+        name,
+        email,
+        password,
+        role: ROLES.OWNER,
+      });
+    } catch (createError) {
+      console.error("Failed to create demo user:", createError.message);
+      res.status(500);
+      throw new Error("Failed to initialize demo account.");
+    }
+  }
+
+  res.json({
+    success: true,
+    data: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      token: generateToken(user._id),
+    },
+  });
+});
+
+// @desc    Get current user profile
+// @route   GET /api/v1/auth/me
+// @access  Private
+export const getMe = asyncHandler(async (req, res) => {
+  res.json({
+    success: true,
+    data: {
+      _id: req.user.id,
+      name: req.user.name,
+      email: req.user.email,
+      role: req.user.role,
+    },
+  });
 });

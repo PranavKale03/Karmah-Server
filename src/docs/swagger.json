@@ -17,6 +17,11 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
+      },
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key"
       }
     },
     "schemas": {
@@ -87,6 +92,27 @@
     }
   },
   "paths": {
+    "/auth/demo": {
+      "post": {
+        "summary": "Demo Login (Auto-create or login demo user)",
+        "tags": [
+          "Authentication"
+        ],
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Demo user logged in successfully"
+          },
+          "401": {
+            "description": "Not authorized, invalid API key"
+          }
+        }
+      }
+    },
     "/auth/register": {
       "post": {
         "summary": "Register a new user",

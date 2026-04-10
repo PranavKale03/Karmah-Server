@@ -3,13 +3,13 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 // GET /api/v1/tasks
 export const getTasks = asyncHandler(async (req, res) => {
-  const tasks = await Task.find().sort({ createdAt: -1 });
+  const tasks = await Task.find({ user: req.user._id }).sort({ createdAt: -1 });
   res.json({ success: true, data: tasks });
 });
 
 // POST /api/v1/tasks
 export const createTask = asyncHandler(async (req, res) => {
-  const { title, description, status } = req.body;
+  const { title, description, status, dueDate } = req.body;
 
   if (!title) {
     res.status(400);
@@ -20,6 +20,8 @@ export const createTask = asyncHandler(async (req, res) => {
     title,
     description,
     status,
+    dueDate,
+    user: req.user._id,
   });
 
   res.status(201).json({
@@ -30,19 +32,20 @@ export const createTask = asyncHandler(async (req, res) => {
 
 // PATCH /api/v1/tasks/:id
 export const updateTask = asyncHandler(async (req, res) => {
-  const { title, description, status } = req.body;
+  const { title, description, status, dueDate } = req.body;
 
-  const task = await Task.findById(req.params.id);
+  const task = await Task.findOne({ _id: req.params.id, user: req.user._id });
 
   if (!task) {
     res.status(404);
-    throw new Error("Task not found");
+    throw new Error("Task not found or unauthorized");
   }
 
   // Update provided fields
   if (title) task.title = title;
   task.description = description || "";
   if (status) task.status = status;
+  if (dueDate !== undefined) task.dueDate = dueDate;
 
   await task.save();
 
@@ -51,7 +54,7 @@ export const updateTask = asyncHandler(async (req, res) => {
 
 // DELETE /api/v1/tasks/:id
 export const deleteTask = asyncHandler(async (req, res) => {
-  const task = await Task.findByIdAndDelete(req.params.id);
+  const task = await Task.findOneAndDelete({ _id: req.params.id, user: req.user._id });
 
   if (!task) {
     res.status(404);
