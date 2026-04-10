@@ -1,29 +1,80 @@
 # Karmah Server
 
-The backend service for the **Karmah** Task Management Platform. 
+The robust backend service for the **Karmah** Task Management Platform.
 
-Built cleanly with a robust architecture using standard software engineering principles like MVC design pattern mappings, Role-Based Access Controls (RBAC), Global Error Middleware, AsyncHandlers, and MongoDB Mongoose ORM.
+Built with a clean architecture focusing on security, scalability, and developer experience. Karmah Server implements modern software engineering principles including MVC patterns, Role-Based Access Controls (RBAC), and centralized error handling.
 
-## Setup Instructions
+## 🚀 Features
 
-1. Clone the project.
-2. Ensure you have Node.js and a package manager installed.
-3. Install dependencies by running:
-```bash
-pnpm install
-```
+- **RBAC Authentication**: Secure access control with `OWNER`, `MEMBER`, and `VIEWER` roles.
+- **JWT Security**: Isolated bearer pipelines for all sensitive task operations.
+- **Auto-Demo Provisioning**: Secured API-key driven demo account creation.
+- **OpenAPI Documentation**: Fully interactive Swagger UI for API exploration.
+- **Global Error Handling**: Standardized response payloads for all exception cases.
 
-4. Map out your `.env` variables (e.g. `MONGO_URI`, `JWT_SECRET`, and `JWT_EXPIRES_IN`).
-5. Launch the development server:
-```bash
-pnpm run dev
-```
+## 🛠️ Tech Stack
 
-## Documentation
-An interactive GUI for the API endpoints is fully implemented using OpenAPI specifications with Swagger UI. You can explore the data shapes, token restrictions, and route params by visiting:
+- **Runtime**: [Node.js](https://nodejs.org/) (ES Modules)
+- **Framework**: [Express.js](https://expressjs.com/)
+- **Database**: [MongoDB](https://www.mongodb.com/) with [Mongoose ODM](https://mongoosejs.com/)
+- **Documentation**: [Swagger UI Express](https://github.com/scottie1984/swagger-ui-express)
+- **Security**: [Bcryptjs](https://github.com/dcodeIO/bcrypt.js) & [JSON Web Token](https://github.com/auth0/node-jsonwebtoken)
+
+## 🏁 Getting Started
+
+### Prerequisites
+
+- Node.js (v18+)
+- MongoDB (Local or Atlas)
+- [pnpm](https://pnpm.io/)
+
+### Installation
+
+1. Navigate to the server directory:
+   ```bash
+   cd karmah-server
+   ```
+
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+
+3. Configure environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+
+4. Start the development server:
+   ```bash
+   pnpm run dev
+   ```
+
+## 📖 API Documentation
+
+Explore the API documentation and test endpoints directly via the interactive Swagger UI:
+
 **`http://localhost:6000/api-docs`**
 
-## Architecture Recap
-- **Role-Based Enums**: Granular `OWNER`, `MEMBER`, and `VIEWER` constraints configured through a centralized `src/constants/roles.js` structure.
-- **Enterprise Error Catching**: Route exceptions automatically drop into `src/middleware/error.middleware.js` providing guaranteed formatted structural payloads (`{ success: false, message: string }`).
-- **Security Checkpoints**: Bcrypt password salt-hashing, paired with `jsonwebtoken` to strictly protect `/tasks` logic endpoints under isolated bearer pipelines.
+## 🔐 Environment Variables
+
+| Variable | Description |
+| :--- | :--- |
+| `PORT` | Listening port for the Express server |
+| `MONGO_URI` | Connection string for MongoDB |
+| `JWT_SECRET` | Secret key for signing authorization tokens |
+| `JWT_EXPIRES_IN` | Token validity duration |
+| `DEMO_API_KEY` | Master key to authorize demo login requests |
+| `DEMO_USER_EMAIL` | Default email for the system-generated demo account |
+
+## 📁 Architecture
+
+- `src/controllers/`: Business logic for authentication and task management.
+- `src/middleware/`: Auth protection, RBAC validation, and global error handling.
+- `src/models/`: Mongoose schemas for Users and Tasks.
+- `src/routes/`: Express route definitions mapped to controllers.
+- `src/docs/`: OpenAPI/Swagger documentation schema.
+
+## 📄 License
+
+Distributed under the MIT License.
