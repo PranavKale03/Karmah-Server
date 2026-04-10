@@ -41,7 +41,7 @@ export const updateTask = asyncHandler(async (req, res) => {
 
   // Update provided fields
   if (title) task.title = title;
-  if (description !== undefined) task.description = description;
+  task.description = description || "";
   if (status) task.status = status;
 
   await task.save();
