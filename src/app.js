@@ -16,6 +16,10 @@ const swaggerDocument = JSON.parse(
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("This is Karmah Inc. server.");
+});
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api/v1/auth", authRoutes);
