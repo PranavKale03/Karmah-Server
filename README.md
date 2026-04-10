@@ -16,7 +16,7 @@ Built with a clean architecture focusing on security, scalability, and developer
 
 - **Runtime**: [Node.js](https://nodejs.org/) (ES Modules)
 - **Framework**: [Express.js](https://expressjs.com/)
-- **Database**: [MongoDB](https://www.mongodb.com/) with [Mongoose ODM](https://mongoosejs.com/)
+- **Database**: [MongoDB](https://www.mongodb.com/)
 - **Documentation**: [Swagger UI Express](https://github.com/scottie1984/swagger-ui-express)
 - **Security**: [Bcryptjs](https://github.com/dcodeIO/bcrypt.js) & [JSON Web Token](https://github.com/auth0/node-jsonwebtoken)
 
@@ -30,22 +30,27 @@ Built with a clean architecture focusing on security, scalability, and developer
 
 ### Installation
 
-1. Navigate to the server directory:
+1. Clone the repository
+   ```bash
+   git clone https://github.com/PranavKale03/Karmah-Server.git
+   ```
+
+2. Navigate to the server directory:
    ```bash
    cd karmah-server
    ```
 
-2. Install dependencies:
+3. Install dependencies:
    ```bash
    pnpm install
    ```
 
-3. Configure environment variables:
+4. Configure environment variables:
    ```bash
    cp .env.example .env
    ```
 
-4. Start the development server:
+5. Start the development server:
    ```bash
    pnpm run dev
    ```
