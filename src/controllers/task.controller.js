@@ -1,13 +1,17 @@
 import Task from "../models/task.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
-// GET /api/v1/tasks
+// @desc    Get all tasks
+// @route   GET /api/v1/tasks
+// @access  Private
 export const getTasks = asyncHandler(async (req, res) => {
   const tasks = await Task.find({ user: req.user._id }).sort({ createdAt: -1 });
   res.json({ success: true, data: tasks });
 });
 
-// POST /api/v1/tasks
+// @desc    Create a new task
+// @route   POST /api/v1/tasks
+// @access  Private
 export const createTask = asyncHandler(async (req, res) => {
   const { title, description, status, dueDate } = req.body;
 
@@ -30,7 +34,9 @@ export const createTask = asyncHandler(async (req, res) => {
   });
 });
 
-// PATCH /api/v1/tasks/:id
+// @desc    Update a task
+// @route   PATCH /api/v1/tasks/:id
+// @access  Private
 export const updateTask = asyncHandler(async (req, res) => {
   const { title, description, status, dueDate } = req.body;
 
@@ -41,7 +47,6 @@ export const updateTask = asyncHandler(async (req, res) => {
     throw new Error("Task not found or unauthorized");
   }
 
-  // Update provided fields
   if (title) task.title = title;
   task.description = description || "";
   if (status) task.status = status;
@@ -52,7 +57,9 @@ export const updateTask = asyncHandler(async (req, res) => {
   res.json({ success: true, data: task });
 });
 
-// DELETE /api/v1/tasks/:id
+// @desc    Delete a task
+// @route   DELETE /api/v1/tasks/:id
+// @access  Private
 export const deleteTask = asyncHandler(async (req, res) => {
   const task = await Task.findOneAndDelete({ _id: req.params.id, user: req.user._id });
 

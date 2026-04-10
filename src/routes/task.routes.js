@@ -10,7 +10,7 @@ import { ROLES } from "../constants/roles.js";
 
 const router = express.Router();
 
-router.use(protect); // All standard task routes need generalized protection
+router.use(protect);
 
 router.get("/", authorize(ROLES.OWNER, ROLES.MEMBER, ROLES.VIEWER), getTasks);
 router.post("/", authorize(ROLES.OWNER, ROLES.MEMBER), createTask);

@@ -34,7 +34,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
-    role: role || ROLES.VIEWER, // Default to viewer if not explicitly provided
+    role: role || ROLES.VIEWER,
   });
 
   if (user) {
@@ -79,6 +79,7 @@ export const loginUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid credentials");
   }
 });
+
 // @desc    Demo Login (Auto-create or login demo user)
 // @route   POST /api/v1/auth/demo
 // @access  Protected by API Key
